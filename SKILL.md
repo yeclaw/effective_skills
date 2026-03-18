@@ -1,62 +1,63 @@
 ---
 name: effective-skills
-description: 设计高质量 Agent Skills 的最佳实践。当需要创建新 skill、优化现有 skill、或遇到 skill 效果不佳时使用。包括：Gotchas 常见失败点、设计原则、描述撰写技巧、渐进式披露策略。注意：技术实现细节请参考 skill-creator。
+description: Best practices for designing high-quality Agent Skills. Use when creating new skills, optimizing existing ones, or when skills aren't working well. Includes: Gotchas (common failure points), design principles, description writing tips, progressive disclosure strategy. For technical implementation details, refer to skill-creator.
 ---
 
 # Effective Skills Design
 
-## ⚠️ Gotchas (最重要！)
+## ⚠️ Gotchas (Most Important!)
 
-这是从真实失败中总结的最高价值信息。
+Highest-value information from real failures.
 
-### 1. Description 是给模型用的，不是给人看的
+### 1. Description is for the Model, Not Humans
 
 ```yaml
-# ❌ 错误：太笼统
-description: "帮助编写 Python 代码"
+# ❌ Wrong: Too vague
+description: "Helps write Python code"
 
-# ✅ 正确：具体说明触发时机
-description: "Python 代码编写、调试和重构。当需要：写新功能、debug、代码审查、重构时触发。"
+# ✅ Correct: Specific triggering conditions
+description: "Python code writing, debugging, and refactoring. Use when: writing new features, debugging, code review, or refactoring."
 ```
 
-**关键**：把"什么时候用"的信息放在 description，而不是 body。
+**Key**: Put "when to use" info in description, NOT in body.
 
-### 2. 别写显而易见的东西
+### 2. Don't State the Obvious
 
-Claude 已经很聪明了。你需要提供的是：
-- 你的特定领域知识
-- 常见失败点和解决方案
-- 独特的工作流
+OpenClaw is already smart. Provide:
+- Your domain-specific knowledge
+- Common failure points and solutions
+- Unique workflows
 
 ```markdown
-# ❌ 冗余
-- 使用 Python 的 def 关键字定义函数
-- 函数可以有参数和返回值
+# ❌ Redundant
+- Use Python's def keyword to define functions
+- Functions can have parameters and return values
 
-# ✅ 有价值
-- 这个项目的函数命名规范：snake_case
-- 常用函数在 utils.py 中，避免重复定义
+# ✅ Valuable
+- This project's function naming: snake_case
+- Common functions are in utils.py, avoid duplicates
 ```
 
-### 3. 验证！验证！验证！
+### 3. Verify! Verify! Verify!
 
-代码开发类 skill 必须在最后添加验证步骤：
+Code development skills MUST include verification steps:
+
 ```markdown
-- [ ] Step 3: 编写功能代码
-- [ ] Step 4: 运行语法检查 ← 必须
-- [ ] Step 5: 执行测试 ← 必须
+- [ ] Step 3: Write functional code
+- [ ] Step 4: Run syntax check ← Required
+- [ ] Step 5: Execute tests ← Required
 ```
 
-### 4. 避免过度限定 (Avoid Railroading)
+### 4. Avoid Railroading
 
-给 Claude 足够的信息，但保持灵活性：
+Give OpenClaw enough information, but keep flexibility:
 
 ```markdown
-# ❌ 太死板
-必须先读 A，再读 B，最后写 C
+# ❌ Too rigid
+Must read A first, then B, then write C
 
-# ✅ 有弹性
-建议顺序：A → B → C，但根据实际情况调整
+# ✅ Flexible
+Recommended order: A → B → C, but adjust based on实际情况
 ```
 
 ---
@@ -65,26 +66,26 @@ Claude 已经很聪明了。你需要提供的是：
 
 ### Concise is Key
 
-上下文窗口是公共资源。默认假设 Claude 已经很聪明，只添加它不具备的上下文。
+Context window is a shared resource. Assume OpenClaw is already smart—only add context it doesn't have.
 
-**检验标准**：这段信息是否值得占用 token？
+**Test**: Is this information worth the token cost?
 
 ### Set Appropriate Degrees of Freedom
 
-根据任务类型决定自由度：
+Choose freedom level based on task type:
 
-| 任务类型 | 自由度 | 示例 |
-|---------|--------|------|
-| 文本创作 | 高 | "用活泼的语气写..." |
-| 有固定模式 | 中 | "用这个模板，参数可调" |
-| 脆弱操作 | 低 | "必须按顺序执行这 5 步" |
+| Task Type | Freedom | Example |
+|-----------|---------|---------|
+| Text creation | High | "Write in a lively tone..." |
+| Fixed patterns | Medium | "Use this template, parameters adjustable" |
+| Fragile operations | Low | "Must execute these 5 steps in order" |
 
 ### Progressive Disclosure
 
-三层加载：
-1. **Metadata** (name + description) - 始终在上下文
-2. **SKILL.md body** - skill 触发时加载
-3. **references/** - 按需加载
+Three-layer loading:
+1. **Metadata** (name + description) - Always in context
+2. **SKILL.md body** - Loaded when skill triggers
+3. **references/** - Loaded on demand
 
 ---
 
@@ -92,72 +93,38 @@ Claude 已经很聪明了。你需要提供的是：
 
 ```
 skill-name/
-├── SKILL.md           # 必需：元数据 + 核心指令
-├── scripts/           # 可选：可执行脚本
-├── references/        # 可选：按需加载的文档
-└── assets/           # 可选：输出用的资源文件
+├── SKILL.md           # Required: metadata + core instructions
+├── scripts/           # Optional: executable scripts
+├── references/        # Optional: docs loaded on demand
+└── assets/           # Optional: output resources
 ```
 
-详细结构说明见 [references/structure.md](references/structure.md)
-
----
-
-## 🔄 Common Patterns
-
-### Pattern 1: 带参考文档的主文件
-
-```markdown
-# SKILL.md
-## 快速开始
-[核心指令]
-
-## 详细指南
-- 高级用法 → [references/advanced.md](references/advanced.md)
-- 常见问题 → [references/faq.md](references/faq.md)
-```
-
-### Pattern 2: 按领域组织
-
-```
-big-query/
-├── SKILL.md
-└── references/
-    ├── finance.md
-    ├── sales.md
-    └── product.md
-```
-
-### Pattern 3: 带配置的 Setup
-
-首次使用时询问或读取 config.json：
-
-```markdown
-如果 config.json 不存在，请询问用户：
-- API 密钥
-- 偏好设置
-```
+See [references/structure.md](references/structure.md) for details.
 
 ---
 
 ## 📦 Distribution
 
-### 方式 1: 放入 repo
+### Option 1: In Repo
+
 ```
-./claude/skills/  # 项目级 skill
+./claude/skills/           # Project-level skill
+~/.claude/skills/           # User-level skill
 ```
 
-### 方式 2: 发布到 Marketplace
-- 先在 sandbox 测试
-- 验证有实际需求后再提交
-- 做好 curation（质量把控）
+### Option 2: Publish
 
-详见 [references/distribution.md](references/distribution.md)
+- Test in sandbox first
+- Verify actual demand before publishing
+- Maintain quality control
+
+See [references/distribution.md](references/distribution.md).
 
 ---
 
 ## 🔗 Related Skills
 
-- **skill-creator** - 技术实现：如何创建、初始化、打包 skill
-- **auto-todo** - 多步骤任务执行框架
+- **skill-creator** - Technical implementation: creating, initializing, packaging skills
+- **auto-todo** - Multi-step task execution framework
 
-需要技术实现细节时使用 skill-creator，需要设计指导时使用本 skill。
+Use skill-creator for technical details, this skill for design guidance.

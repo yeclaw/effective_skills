@@ -1,100 +1,100 @@
-# Skill 分发指南
+# Skill Distribution Guide
 
-## 方式 1: 放入 Repo (小型团队)
+## Option 1: In Repo (Small Teams)
 
 ```
-./.claude/skills/           # 项目级
-~/.claude/skills/           # 用户级
+./claude/skills/           # Project-level
+~/.claude/skills/           # User-level
 ```
 
-**优点**：
-- 简单直接
-- 版本控制
-- 团队共享
+**Pros**:
+- Simple and direct
+- Version controlled
+- Team sharing
 
-**缺点**：
-- 每个 repo 都添加上下文
-- 难以为大量 repo 分发
+**Cons**:
+- Adds context to every repo
+- Hard to distribute across many repos
 
 ---
 
-## 方式 2: Marketplace (规模化)
+## Option 2: Marketplace (Scale)
 
-### 上传流程
+### Upload Process
 
-1. **开发阶段**：在本地或 sandbox 测试
-2. **初步验证**：确保有实际使用需求
-3. **提交 PR**：移动到 marketplace 目录
+1. **Development**: Test locally or in sandbox
+2. **Validation**: Ensure real usage demand
+3. **Submit**: Move to marketplace directory
 
-### Curation 原则
+### Curation Principles
 
-**发布前检查**：
-- [ ] 是否有清晰的 description？
-- [ ] 是否有 Gotchas（常见失败点）？
-- [ ] 是否避免显而易见的内容？
-- [ ] 是否有实际用例验证？
+**Pre-publish Checklist**:
+- [ ] Clear description?
+- [ ] Gotchas included?
+- [ ] Avoided obvious content?
+- [ ] Validated with real use cases?
 
-**质量标准**：
-- 独特的领域知识 > 通用知识
-- 真实失败经验 > 理论推导
-- 简洁 > 冗长
+**Quality Standards**:
+- Unique domain knowledge > generic knowledge
+- Real failure experience > theory
+- Concise > verbose
 
 ---
 
-## 依赖管理
+## Dependency Management
 
-Skill 可以依赖其他 skill：
+Skills can depend on other skills:
 
 ```
-skill-a/           # 上传 skill
-skill-b/           # 被依赖的 skill
+skill-a/           # Uploaded skill
+skill-b/           # Dependency
 ```
 
-使用时：
+Usage:
 ```markdown
-# 在 skill-a 中
-要执行 X，请先使用 skill-b
+# In skill-a
+To execute X, first use skill-b
 ```
 
-模型会自动调用已安装的依赖 skill。
+Model will automatically invoke installed dependent skills.
 
 ---
 
-## 测量与迭代
+## Measurement & Iteration
 
-### 追踪使用
+### Track Usage
 
-可以用 PreToolUse hook 记录 skill 使用情况：
+Use PreToolUse hook to log skill usage:
 
 ```python
-# 伪代码
+# Pseudocode
 def pre_tool_use(tool_name, tool_input):
     if tool_name == "SkillLoader":
         log_skill_usage(tool_input["skill_name"])
 ```
 
-### 指标
+### Metrics
 
-- 使用频率
-- 触发准确度（是否在正确场景触发）
-- 用户反馈
+- Usage frequency
+- Trigger accuracy (correct scenario)
+- User feedback
 
-### 迭代循环
+### Iteration Loop
 
-1. 真实任务中使用
-2. 发现低效或失败
-3. 更新 SKILL.md 或 resources
-4. 重新测试
+1. Use in real tasks
+2. Find inefficiencies or failures
+3. Update SKILL.md or resources
+4. Retest
 
 ---
 
-## 常见问题
+## FAQ
 
-**Q: 什么时候该创建新 skill？**
-A: 当某个领域的知识或工作流经常重复，且现有 skills 无法覆盖。
+**Q: When should I create a new skill?**
+A: When a domain's knowledge or workflow repeats frequently and existing skills can't cover it.
 
-**Q: skill 太长怎么办？**
-A: 拆分到 references/，用渐进式披露。
+**Q: Skill too long?**
+A: Split into references/, use progressive disclosure.
 
-**Q: 如何处理敏感信息？**
-A: 使用 config.json，添加 .gitignore 忽略敏感配置。
+**Q: How to handle sensitive info?**
+A: Use config.json, add to .gitignore for sensitive configs.

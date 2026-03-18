@@ -1,36 +1,36 @@
-# Skill 目录结构详解
+# Skill Directory Structure
 
-## 必需文件
+## Required Files
 
 ### SKILL.md
 
-每个 skill 必须包含，包含两部分：
+Every skill must have this, containing two parts:
 
-#### 1. YAML Frontmatter (必需)
+#### 1. YAML Frontmatter (Required)
 
 ```yaml
 ---
-name: skill-name          # 技能名称
-description: 触发描述     # 最重要！告诉模型什么时候用这个 skill
+name: skill-name          # Skill name
+description: Trigger description  # Most important! Tells model when to use
 ---
 ```
 
-**description 写作技巧**：
-- 包含"什么时候用"的信息
-- 列出具体使用场景
-- 使用主动语态
+**Description Writing Tips**:
+- Include "when to use" information
+- List specific use cases
+- Use active voice
 
 #### 2. Body (Markdown)
 
-核心指令和指导。只在 skill 触发后加载。
+Core instructions and guidance. Only loaded after skill triggers.
 
 ---
 
-## 可选目录
+## Optional Directories
 
-### scripts/ - 可执行脚本
+### scripts/ - Executable Scripts
 
-**用途**：需要确定性可靠性的代码
+**Purpose**: Code requiring deterministic reliability
 
 ```
 scripts/
@@ -39,35 +39,35 @@ scripts/
 └── process.py
 ```
 
-**使用场景**：
-- 相同代码被反复重写
-- 需要确定性结果
-- 可以不加载到上下文直接执行
+**Use when**:
+- Same code being rewritten repeatedly
+- Deterministic results needed
+- Can execute without loading into context
 
-### references/ - 参考文档
+### references/ - Reference Docs
 
-**用途**：按需加载的详细文档
+**Purpose**: Detailed docs loaded on demand
 
 ```
 references/
-├── api.md       # API 文档
-├── patterns.md  # 模式指南
-└── examples.md  # 示例
+├── api.md       # API docs
+├── patterns.md  # Pattern guides
+└── examples.md  # Examples
 ```
 
-**使用场景**：
-- 详细文档不需要始终在上下文
-- 按需加载（用户问到相关话题时）
-- 保持 SKILL.md 简洁
+**Use when**:
+- Detailed docs don't need to always be in context
+- Load on demand (when user asks about related topic)
+- Keep SKILL.md concise
 
-**最佳实践**：
-- 文件 > 10k 字时使用 grep 模式
-- 避免与 SKILL.md 重复
-- 只放必要信息
+**Best practices**:
+- Use grep patterns for files > 10k words
+- Avoid duplication with SKILL.md
+- Only include essential info
 
-### assets/ - 输出资源
+### assets/ - Output Resources
 
-**用途**：最终输出使用的文件，不加载到上下文
+**Purpose**: Files for final output, not loaded into context
 
 ```
 assets/
@@ -76,34 +76,34 @@ assets/
 └── frontend-boilerplate/
 ```
 
-**使用场景**：
-- 模板文件
-- 品牌资源
-- 需要拷贝/修改的文件
+**Use when**:
+- Template files
+- Brand assets
+- Files to copy/modify
 
 ---
 
-## 什么不该放
+## What NOT to Include
 
-❌ 以下文件**不需要**创建：
+❌ Don't create:
 - README.md
 - INSTALLATION_GUIDE.md
 - CHANGELOG.md
 - QUICK_REFERENCE.md
 
-Skill 只包含 AI 执行任务所需的信息，不包含过程文档。
+Skills should only contain info needed for AI to do the task—not process documentation.
 
 ---
 
-## 示例结构
+## Example Structures
 
-### 简单 skill
+### Simple Skill
 ```
 hello/
 ├── SKILL.md
 ```
 
-### 中等复杂
+### Medium Complexity
 ```
 pdf-editor/
 ├── SKILL.md
@@ -111,7 +111,7 @@ pdf-editor/
     └── rotate_pdf.py
 ```
 
-### 复杂 skill
+### Complex Skill
 ```
 data-science/
 ├── SKILL.md
