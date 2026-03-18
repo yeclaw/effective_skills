@@ -1,6 +1,6 @@
 ---
 name: effective-skills
-description: Best practices for designing high-quality Agent Skills. Use when creating new skills, optimizing existing ones, or when skills aren't working well. Includes: Gotchas (common failure points), design principles, description writing tips, progressive disclosure strategy. For technical implementation details, refer to skill-creator.
+description: Best practices for designing high-quality Agent Skills. Use when creating new skills, optimizing existing ones, or when skills aren't working well. Includes: Gotchas (common failure points), design principles, description writing tips, progressive disclosure, skill composition. For technical implementation, refer to skill-creator.
 ---
 
 # Effective Skills Design
@@ -31,11 +31,10 @@ OpenClaw is already smart. Provide:
 ```markdown
 # ❌ Redundant
 - Use Python's def keyword to define functions
-- Functions can have parameters and return values
 
 # ✅ Valuable
 - This project's function naming: snake_case
-- Common functions are in utils.py, avoid duplicates
+- Common functions are in utils.py
 ```
 
 ### 3. Verify! Verify! Verify!
@@ -50,15 +49,30 @@ Code development skills MUST include verification steps:
 
 ### 4. Avoid Railroading
 
-Give OpenClaw enough information, but keep flexibility:
+Give OpenClaw flexibility to adapt:
 
 ```markdown
 # ❌ Too rigid
 Must read A first, then B, then write C
 
 # ✅ Flexible
-Recommended order: A → B → C, but adjust based on实际情况
+Recommended order: A → B → C, adjust based on实际情况
 ```
+
+### 5. Store Scripts, Not Just Instructions
+
+Rather than describing steps in text, provide executable scripts:
+
+```markdown
+# ❌ Text-heavy
+To process data: read the file, parse JSON, filter, output
+
+# ✅ Script-based
+scripts/
+├── process_data.py  # Reusable, deterministic
+```
+
+This lets OpenClaw focus on composition, not reconstructing boilerplate.
 
 ---
 
@@ -66,26 +80,25 @@ Recommended order: A → B → C, but adjust based on实际情况
 
 ### Concise is Key
 
-Context window is a shared resource. Assume OpenClaw is already smart—only add context it doesn't have.
-
-**Test**: Is this information worth the token cost?
-
-### Set Appropriate Degrees of Freedom
-
-Choose freedom level based on task type:
-
-| Task Type | Freedom | Example |
-|-----------|---------|---------|
-| Text creation | High | "Write in a lively tone..." |
-| Fixed patterns | Medium | "Use this template, parameters adjustable" |
-| Fragile operations | Low | "Must execute these 5 steps in order" |
+Context window is a shared resource. Only add what OpenClaw doesn't know.
 
 ### Progressive Disclosure
 
 Three-layer loading:
-1. **Metadata** (name + description) - Always in context
-2. **SKILL.md body** - Loaded when skill triggers
-3. **references/** - Loaded on demand
+1. **Metadata** - Always in context (~100 words)
+2. **SKILL.md body** - When skill triggers (<5k words)
+3. **references/** - On demand (unlimited)
+
+### Skill Composition
+
+Skills can depend on each other:
+
+```markdown
+# In skill-a
+To execute X, first use skill-b
+```
+
+OpenClaw will automatically invoke installed dependent skills.
 
 ---
 
@@ -93,38 +106,19 @@ Three-layer loading:
 
 ```
 skill-name/
-├── SKILL.md           # Required: metadata + core instructions
-├── scripts/           # Optional: executable scripts
-├── references/        # Optional: docs loaded on demand
-└── assets/           # Optional: output resources
+├── SKILL.md           # Required: metadata + core
+├── scripts/           # Executable code (Python/Bash)
+├── references/        # Docs loaded on demand
+└── assets/            # Output resources (templates, etc.)
 ```
 
-See [references/structure.md](references/structure.md) for details.
-
----
-
-## 📦 Distribution
-
-### Option 1: In Repo
-
-```
-./claude/skills/           # Project-level skill
-~/.claude/skills/           # User-level skill
-```
-
-### Option 2: Publish
-
-- Test in sandbox first
-- Verify actual demand before publishing
-- Maintain quality control
-
-See [references/distribution.md](references/distribution.md).
+**scripts/**: Store reusable code instead of rewriting.
+**references/**: Keep detailed docs here, not in SKILL.md.
+**assets/**: Templates and files for output.
 
 ---
 
 ## 🔗 Related Skills
 
-- **skill-creator** - Technical implementation: creating, initializing, packaging skills
-- **auto-todo** - Multi-step task execution framework
-
-Use skill-creator for technical details, this skill for design guidance.
+- **skill-creator** - Technical: init, package, validate
+- **auto-todo** - Multi-step task framework

@@ -4,33 +4,30 @@
 
 ### SKILL.md
 
-Every skill must have this, containing two parts:
+Every skill must have this:
 
-#### 1. YAML Frontmatter (Required)
+#### YAML Frontmatter (Required)
 
 ```yaml
 ---
-name: skill-name          # Skill name
-description: Trigger description  # Most important! Tells model when to use
+name: skill-name
+description: Trigger description - when to use this skill
 ---
 ```
 
-**Description Writing Tips**:
-- Include "when to use" information
-- List specific use cases
-- Use active voice
+**Critical**: Description is what OpenClaw scans to decide "should I use this skill?" Put "when to use" info here.
 
-#### 2. Body (Markdown)
+#### Body
 
-Core instructions and guidance. Only loaded after skill triggers.
+Core instructions. Only loaded after skill triggers. Keep under 500 lines.
 
 ---
 
 ## Optional Directories
 
-### scripts/ - Executable Scripts
+### scripts/
 
-**Purpose**: Code requiring deterministic reliability
+Executable code (Python/Bash/etc.) - not just instructions.
 
 ```
 scripts/
@@ -39,35 +36,24 @@ scripts/
 └── process.py
 ```
 
-**Use when**:
-- Same code being rewritten repeatedly
-- Deterministic results needed
-- Can execute without loading into context
+**Why**: OpenClaw executes scripts directly instead of rewriting the same code.
 
-### references/ - Reference Docs
+### references/
 
-**Purpose**: Detailed docs loaded on demand
+Detailed docs loaded on demand:
 
 ```
 references/
-├── api.md       # API docs
-├── patterns.md  # Pattern guides
-└── examples.md  # Examples
+├── api.md
+├── patterns.md
+└── examples.md
 ```
 
-**Use when**:
-- Detailed docs don't need to always be in context
-- Load on demand (when user asks about related topic)
-- Keep SKILL.md concise
+Keep SKILL.md concise - move detailed content here.
 
-**Best practices**:
-- Use grep patterns for files > 10k words
-- Avoid duplication with SKILL.md
-- Only include essential info
+### assets/
 
-### assets/ - Output Resources
-
-**Purpose**: Files for final output, not loaded into context
+Files for final output (templates, icons, etc.):
 
 ```
 assets/
@@ -76,34 +62,28 @@ assets/
 └── frontend-boilerplate/
 ```
 
-**Use when**:
-- Template files
-- Brand assets
-- Files to copy/modify
-
 ---
 
 ## What NOT to Include
 
-❌ Don't create:
 - README.md
 - INSTALLATION_GUIDE.md
 - CHANGELOG.md
 - QUICK_REFERENCE.md
 
-Skills should only contain info needed for AI to do the task—not process documentation.
+Skills contain only what AI needs to execute - not process docs.
 
 ---
 
 ## Example Structures
 
-### Simple Skill
+### Simple
 ```
 hello/
 ├── SKILL.md
 ```
 
-### Medium Complexity
+### Medium
 ```
 pdf-editor/
 ├── SKILL.md
@@ -111,7 +91,7 @@ pdf-editor/
     └── rotate_pdf.py
 ```
 
-### Complex Skill
+### Complex
 ```
 data-science/
 ├── SKILL.md
