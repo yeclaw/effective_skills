@@ -1,6 +1,6 @@
 ---
 name: effective-skills
-description: Best practices for designing high-quality Agent Skills. Trigger: ("写个skill", "写个脚本", "创建skill", "创建一个skill", "创建自动化流程", "优化这个skill", "how to write a skill", "create a skill", "design a skill", "skill optimization"). Use when creating new skills, optimizing existing ones, or when skills aren't working well. For technical implementation (init, package, validate), refer to skill-creator.
+description: "Best practices for designing high-quality Agent Skills. Trigger: (write a skill, create a skill, design a skill, skill optimization, creating new skills, optimizing existing skills, skills not working). Use when creating or optimizing skills. For technical implementation (init, package, validate) refer to skill-creator."
 ---
 
 # Effective Skills Design
