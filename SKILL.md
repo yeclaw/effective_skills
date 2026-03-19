@@ -1,6 +1,6 @@
 ---
 name: effective-skills
-description: Best practices for designing high-quality Agent Skills. Use when creating new skills, optimizing existing ones, or when skills aren't working well. Includes: Gotchas (common failure points), design principles, description writing tips, progressive disclosure, skill composition. For technical implementation, refer to skill-creator.
+description: Best practices for designing high-quality Agent Skills. Trigger: ("写个skill", "写个脚本", "创建skill", "创建一个skill", "创建自动化流程", "优化这个skill", "how to write a skill", "create a skill", "design a skill", "skill optimization"). Use when creating new skills, optimizing existing ones, or when skills aren't working well. For technical implementation (init, package, validate), refer to skill-creator.
 ---
 
 # Effective Skills Design
@@ -76,6 +76,20 @@ This lets OpenClaw focus on composition, not reconstructing boilerplate.
 
 ---
 
+## ✅ Skill Design Checklist
+
+Before finishing a skill, verify:
+
+- [ ] **English Only**: SKILL.md and all resources written in English
+- [ ] **Trigger phrases**: description covers all likely trigger words/phrases
+- [ ] **Concise SKILL.md**: body under 500 lines, core workflow only
+- [ ] **Progressive disclosure**: detailed content in references/, not SKILL.md
+- [ ] **Code verification**: syntax check + test execution steps included
+- [ ] **Scripts vs text**: reusable code in scripts/, not prose
+- [ ] **Cross-reference**: references skill-creator or auto-todo where relevant
+
+---
+
 ## 🎯 Design Principles
 
 ### Concise is Key
@@ -109,7 +123,7 @@ skill-name/
 ├── SKILL.md           # Required: metadata + core
 ├── scripts/           # Executable code (Python/Bash)
 ├── references/        # Docs loaded on demand
-└── assets/            # Output resources (templates, etc.)
+└── assets/           # Output resources (templates, etc.)
 ```
 
 **scripts/**: Store reusable code instead of rewriting.
@@ -120,5 +134,5 @@ skill-name/
 
 ## 🔗 Related Skills
 
-- **skill-creator** - Technical: init, package, validate
-- **auto-todo** - Multi-step task framework
+- **skill-creator** - Technical implementation: init, package, validate (use AFTER planning with effective-skills)
+- **auto-todo** - Multi-step task framework for complex skill development
